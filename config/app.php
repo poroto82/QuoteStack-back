@@ -18,6 +18,8 @@ return [
 
     'name' => env('APP_NAME', 'Laravel'),
 
+    'quote_cache_ttl' => env('QUOTE_CACHE_TTL', 30),
+
     /*
     |--------------------------------------------------------------------------
     | Application Environment

@@ -25,7 +25,7 @@ class QuoteService{
         // Si no hay datos en caché o no se utiliza la caché, obtener desde el repositorio
         $quotes = $this->quoteRepository->getRandomQuotes($limit);
 
-        Cache::put($cacheKey, $quotes, now()->addSeconds(30));
+        Cache::put($cacheKey, $quotes, now()->addSeconds(config('app.quote_cache_ttl')));
 
         return $quotes;
     }
