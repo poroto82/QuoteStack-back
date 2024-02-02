@@ -4,11 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Services\QuoteService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class QuoteController extends Controller
 {
+    protected $quoteService;
+
+    public function __construct(QuoteService $quoteService)
+    {
+        $this->quoteService = $quoteService;
+    }
+
     public function getRandomQuotes(){
-        $quotes = (new QuoteService())->getRandomQuotes(5);
+        $quotes = $this->quoteService->getRandomQuotes(5);
         //map quotes to json
         return response(['quotes' => $quotes], 200);
     }
@@ -17,7 +25,7 @@ class QuoteController extends Controller
         //Retrieve user
         $user = Auth::user();
 
-        $quotes = (new QuoteService())->getUserQuotes($user);
+        $quotes = $this->quoteService->getUserQuotes($user);
         //map quotes to json
         return response(['quotes' => $quotes], 200);
     }
