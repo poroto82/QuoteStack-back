@@ -11,6 +11,7 @@ class AuthController extends Controller
     // Registro de un nuevo usuario
     public function register(Request $request)
     {
+        
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|unique:users|max:255',

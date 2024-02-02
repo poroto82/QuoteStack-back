@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Http;
 
 class ZenQuoteRepository{
 
-    public function getRandomQuote(){
+    public function getRandomQuotes(){
          // Realizar la solicitud a la API de Quotes
          $response = Http::get('https://zenquotes.io/api/random');
 

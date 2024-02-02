@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\QuoteController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -18,7 +20,15 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
+Route::post('/register', [AuthController::class, 'register']);
+
+Route::post('/login', [AuthController::class, 'login']);
+
+Route::get('/quotes', [QuoteController::class,'getRandomQuotes'])->name('api.quote.random');
+
+
 Route::middleware(['auth:api'])->group(function () {
-    // Rutas protegidas
-    // ...
+    Route::get('/secure-quotes', [QuoteController::class, 'getSecuredQuotes'])->name('api.quote.secure');
+
+    Route::post('/logout', [AuthController::class, 'logout']);
 });
