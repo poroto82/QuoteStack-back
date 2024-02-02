@@ -31,7 +31,7 @@ Route::middleware(['auth:api'])->group(function () {
 
     Route::get('/user/quotes', [QuoteController::class,'getUserQuotes'])->name('get.api.secured.quotes');
     Route::post('/user/quotes', [QuoteController::class,'saveUserQuote'])->name('post.api.secured.quotes');
-    Route::delete('/user/quotes/{id}', [QuoteController::class,'saveSecureQuote'])->name('delete.api.secured.quotes');
+    Route::delete('/user/quotes/{id}', [QuoteController::class,'deleteUserQuote'])->name('delete.api.secured.quotes');
 
 
     Route::post('/logout', [AuthController::class, 'logout']);

@@ -34,13 +34,14 @@ class QuoteService{
         return $quotes;
     }
 
-    public function saveUserQuote(User $user, string $quote){
+    public function saveUserQuote(User $user,  $quote){
         $userQuote = new UserQuote();
         $userQuote->user_id = $user->id;
-        $userQuote->quote = "dsffdsdfs";
+        $userQuote->quote = json_encode($quote);
         $userQuote->save();
         return $userQuote;
     }
+    
 
     
 }

@@ -2,19 +2,28 @@
 
 namespace App\Mappers;
 
+use App\DTOS\QuoteDTO;
 use App\Models\Quote;
+use Illuminate\Http\Request;
 
 class QuoteMapper
 {
     public static function mapToApiResponse(Quote $quote)
     {
-        return [
-            'text' => $quote->q,
-            'author' => $quote->a,
-            'image' => $quote->i,
-            'characterCount' => $quote->c,
-            'html' => $quote->h
-        ];
+        $quoteDto = new QuoteDTO();
+        $quoteDto->text = $quote->q;
+        $quoteDto->author = $quote->a;
+        $quoteDto->image = $quote->i;
+        $quoteDto->characterCount = $quote->c;
+        $quoteDto->html = $quote->h;
+        return $quoteDto;
+    }
+
+    public static function fromRequest (Request $request){
+        $quoteDto = new QuoteDTO();
+        $quoteDto->text = $request->input('text');
+        
+        return $quoteDto;
     }
 
     public static function mapApiResponseToQuote(array $data){

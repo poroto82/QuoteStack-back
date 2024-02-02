@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+
 use App\Mappers\QuoteMapper;
-use App\Models\Quote;
 use App\Models\User;
+use App\Models\UserQuote;
 use App\Services\QuoteService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -29,21 +30,37 @@ class QuoteController extends Controller
 
     public function getUserQuotes(){
         //Retrieve user
-        $userId = Auth::id();
+        $user = Auth::user();
 
         //Retrieve user and relation Quotes
-        $quotes = User::find($userId)->quotes;
+        $quotes = $user->quotes()->get();
 
+        if ($quotes->isEmpty()) {
+            return response(['message' => 'No favorite quotes found.'], 404);
+        }
+    
+        // Map quotes to dto using Collection map method
+        $mappedQuotes = $quotes->map(function ($quote) {
+            return json_decode($quote->quote);
+        });
         //map quotes to dto and return
-        return response([QuoteMapper::mapArrayQuotesToApiResponse($quotes)], 200);
+        return response(['quotes' => $mappedQuotes], 200);
     }
 
-    public function saveUserQuote(){
+    public function saveUserQuote(Request $request){
+        $quoteDTO = QuoteMapper::fromRequest($request);
+        
         //Retrieve user
         $user = Auth::user();
 
-        $quote = $this->quoteService->saveUserQuote($user, "asfaf");
+        $quote = $this->quoteService->saveUserQuote($user, $quoteDTO);
         //map quotes to json
         return response(json_encode($quote), 200);
+    }
+
+    public function deleteUserQuote(int $id){
+        $userQuote = UserQuote::find($id);
+        $userQuote->delete();
+        return response(202);
     }
 }
