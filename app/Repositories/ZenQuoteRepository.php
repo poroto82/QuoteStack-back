@@ -7,21 +7,21 @@ use Illuminate\Support\Facades\Http;
 
 class ZenQuoteRepository{
 
-    public function getRandomQuotes(): array{
-         // Realizar la solicitud a la API de Quotes
-         $response = Http::get('https://zenquotes.io/api/random');
+    public function getQuotes(string $mode, int $limit): array{
+         // call Api
+         $response = Http::get("https://zenquotes.io?api=$mode");
 
-         // Verificar si la solicitud fue exitosa y devolver los datos
+         // check if succesful
          if ($response->successful()){
-            
-            $quotes = array_map(function($q){
-                return QuoteMapper::mapApiResponseToQuote($q);
-            }, $response->array());
+            //apply limit
+            array_slice($response->json(), 0, $limit);
+            // cast to type
+            $quotes = QuoteMapper::mapArrayApiResponseToQuotes($response->json());
             
             return $quotes;
          }
  
-         // Manejar cualquier error o fallback
+         // null on fallback
          return null;
     }
 }

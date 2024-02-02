@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Models\Quote;
+use App\Models\User;
 use App\Repositories\ZenQuoteRepository;
 use Illuminate\Support\Facades\Cache;
 
@@ -14,7 +16,7 @@ class QuoteService{
         $this->quoteRepository = $quoteRepository;
     }
 
-    public function getRandomQuotes($limit = 5, $useCache = true){
+    public function getQuotes(string $mode, int $limit = 5, bool $useCache = true){
         $cacheKey = 'random_quotes_' . $limit;
 
         if ($useCache && Cache::has($cacheKey)) {
@@ -23,14 +25,18 @@ class QuoteService{
         }
 
         // Si no hay datos en caché o no se utiliza la caché, obtener desde el repositorio
-        $quotes = $this->quoteRepository->getRandomQuotes($limit);
+        $quotes = $this->quoteRepository->getQuotes($mode, $limit);
 
+        //Save to cache
         Cache::put($cacheKey, $quotes, now()->addSeconds(config('app.quote_cache_ttl')));
 
         return $quotes;
     }
 
-    public function getUserQuotes($user){
-        return $user->quotes;
+    public function saveUserQuote(User $user, Quote $quote){
+        $user->quotes[] = $quote;
+        $user->save();
     }
+
+    
 }

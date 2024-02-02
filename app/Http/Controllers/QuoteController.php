@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Mappers\QuoteMapper;
+use App\Models\Quote;
+use App\Models\User;
 use App\Services\QuoteService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,18 +18,31 @@ class QuoteController extends Controller
         $this->quoteService = $quoteService;
     }
 
-    public function getRandomQuotes(){
-        $quotes = $this->quoteService->getRandomQuotes(5);
-        //map quotes to json
-        return response(['quotes' => $quotes], 200);
+    public function getRandomQuote(){
+        //Retrieve Quotes
+        $quotes = $this->quoteService->getQuotes('random');
+        
+        //map quotes to dto and return
+        return response(QuoteMapper::mapToApiResponse($quotes[0]), 200);
     }
 
     public function getFavoriteQuotes(){
         //Retrieve user
+        $userId = Auth::id();
+
+        //Retrieve user and relation Quotes
+        $quotes = User::find($userId)->quotes();
+
+        //map quotes to dto and return
+        return response([QuoteMapper::mapArrayQuotesToApiResponse($quotes)], 200);
+    }
+
+    public function saveFavoriteQuote(Quote $quote){
+        //Retrieve user
         $user = Auth::user();
 
-        $quotes = $this->quoteService->getUserQuotes($user);
+        $quote = $this->quoteService->saveUserQuote($user, $quote);
         //map quotes to json
-        return response(['quotes' => $quotes], 200);
+        return response(['quote' => $quote], 200);
     }
 }

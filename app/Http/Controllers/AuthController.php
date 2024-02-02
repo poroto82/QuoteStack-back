@@ -28,7 +28,7 @@ class AuthController extends Controller
             'password' => bcrypt($request->password),
         ]);
 
-        $token = $user->createToken('MyApp')->accessToken;
+        $token = $user->createToken(config('app.name'))->accessToken;
 
         return response(['token' => $token], 200);
     }
@@ -43,7 +43,7 @@ class AuthController extends Controller
         }
 
         $user = $request->user();
-        $token = $user->createToken('MyApp')->accessToken;
+        $token = $user->createToken(config('app.name'))->accessToken;
 
         return response(['token' => $token], 200);
     }

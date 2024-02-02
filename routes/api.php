@@ -24,7 +24,7 @@ Route::post('/register', [AuthController::class, 'register']);
 
 Route::post('/login', [AuthController::class, 'login']);
 
-Route::get('/quotes', [QuoteController::class,'getRandomQuotes'])->name('api.quote.random');
+Route::get('/quotes', [QuoteController::class,'getRandomQuote'])->name('api.quote.random');
 
 
 Route::middleware(['auth:api'])->group(function () {
