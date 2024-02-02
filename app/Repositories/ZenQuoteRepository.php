@@ -8,7 +8,8 @@ use Illuminate\Support\Facades\Http;
 class ZenQuoteRepository{
 
     public function getQuotes(string $mode, int $limit): array{
-         // call Api
+        
+        // call Api
          $response = Http::get("https://zenquotes.io?api=$mode");
 
          // check if succesful

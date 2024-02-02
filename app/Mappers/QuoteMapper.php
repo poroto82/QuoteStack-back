@@ -14,7 +14,6 @@ class QuoteMapper
             'image' => $quote->i,
             'characterCount' => $quote->c,
             'html' => $quote->h
-            // Otros campos...
         ];
     }
 
