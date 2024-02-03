@@ -8,4 +8,5 @@ class QuoteDTO{
     public ?string $image;
     public ?string $characterCount;
     public string $html;
+    public bool $cached;
 }

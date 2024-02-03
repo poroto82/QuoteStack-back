@@ -16,6 +16,7 @@ class QuoteMapper
         $quoteDto->image = $quote->i;
         $quoteDto->characterCount = $quote->c;
         $quoteDto->html = $quote->h;
+        $quoteDto->cached = $quote->cached;
         return $quoteDto;
     }
 

@@ -17,7 +17,7 @@ class QuoteController extends Controller
         $this->quoteService = $quoteService;
     }
 
-    public function getQuotes(?string $mode = 'quotes', bool $new = false){
+    public function getQuotes(?string $mode = 'quotes', bool $new = false){ 
         
         //Retrieve Quotes
         $quotes = $this->quoteService->getQuotes($mode, !$new);
@@ -34,7 +34,7 @@ class QuoteController extends Controller
         $quotes = $user->quotes;
 
         if ($quotes->isEmpty()) {
-            return response(['message' => 'No favorite quotes found.'], 404);
+            return response(['message' => 'No favorite quotes found.'], 202);
         }
     
         // Map quotes to dto using Collection map method

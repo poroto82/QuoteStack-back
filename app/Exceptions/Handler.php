@@ -27,4 +27,19 @@ class Handler extends ExceptionHandler
             //
         });
     }
+
+
+    public function render($request, \Throwable $exception) {
+
+        if ($exception instanceof ZenRepositoryException) {
+            return response()->json(
+                [
+                    'success' => false,
+                    'message' => $exception->getMessage()
+                ],
+                400
+            );
+        }
+        return parent::render($request, $exception);
+    }
 }
