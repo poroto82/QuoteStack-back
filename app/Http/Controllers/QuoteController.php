@@ -20,7 +20,7 @@ class QuoteController extends Controller
     public function getQuotes(?string $mode = 'quotes', bool $new = false){
         
         //Retrieve Quotes
-        $quotes = $this->quoteService->getQuotes($mode, $new);
+        $quotes = $this->quoteService->getQuotes($mode, !$new);
         
         //map quotes to dto and return
         return response(QuoteMapper::mapArrayQuotesToDto($quotes), 200);

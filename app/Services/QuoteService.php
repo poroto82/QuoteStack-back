@@ -21,6 +21,7 @@ class QuoteService{
     public function getQuotes(string $mode, bool $useCache = true, int $limit = 5): array{
         $cacheKey = $mode.'_quotes_' . $limit;
 
+
         if ($useCache && Cache::has($cacheKey)) {
             // Si se utiliza caché y los datos están en caché, devolver desde la caché
             return Cache::get($cacheKey);
