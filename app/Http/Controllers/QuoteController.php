@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-
+use App\Http\Requests\QuoteRequest;
 use App\Mappers\QuoteMapper;
 use App\Models\User;
 use App\Models\UserQuote;
@@ -47,7 +47,7 @@ class QuoteController extends Controller
         return response(['quotes' => $mappedQuotes], 200);
     }
 
-    public function saveUserQuote(Request $request){
+    public function saveUserQuote(QuoteRequest $request){
         $quoteDTO = QuoteMapper::fromRequestToDto($request);
         
         //Retrieve user

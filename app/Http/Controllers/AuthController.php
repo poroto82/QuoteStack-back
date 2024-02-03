@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreUserRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -9,19 +10,8 @@ use App\Models\User;
 class AuthController extends Controller
 {
     // Registro de un nuevo usuario
-    public function register(Request $request)
+    public function register(StoreUserRequest $request)
     {
-        
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|unique:users|max:255',
-            'password' => 'required|string|min:8',
-        ]);
-
-        if ($validator->fails()) {
-            return response(['errors' => $validator->errors()->all()], 422);
-        }
-
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
