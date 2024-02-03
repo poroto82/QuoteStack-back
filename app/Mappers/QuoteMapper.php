@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class QuoteMapper
 {
-    public static function mapToApiResponse(Quote $quote)
+    public static function mapQuoteToDTO(Quote $quote)
     {
         $quoteDto = new QuoteDTO();
         $quoteDto->text = $quote->q;
@@ -19,14 +19,14 @@ class QuoteMapper
         return $quoteDto;
     }
 
-    public static function fromRequest (Request $request){
+    public static function fromRequestToDto(Request $request): QuoteDTO{
         $quoteDto = new QuoteDTO();
         $quoteDto->text = $request->input('text');
         
         return $quoteDto;
     }
 
-    public static function mapApiResponseToQuote(array $data){
+    public static function mapApiResponseToQuote(array $data): Quote{
         
         $quote = new Quote();
         $quote->q = $data['q'];
@@ -38,15 +38,15 @@ class QuoteMapper
         return $quote;
     }
 
-    public static function mapArrayApiResponseToQuotes(array $quotes){
+    public static function mapArrayApiResponseToQuotes(array $quotes): array{
         return array_map(function($q){
             return self::mapApiResponseToQuote($q);
         },$quotes);
     }
 
-    public static function mapArrayQuotesToApiResponse(array $quotes){
+    public static function mapArrayQuotesToDto(array $quotes): array{
         return array_map(function($q){
-            return self::mapToApiResponse($q);
+            return self::mapQuoteToDTO($q);
         },$quotes);
     }
 }

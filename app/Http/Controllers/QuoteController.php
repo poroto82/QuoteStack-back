@@ -25,7 +25,7 @@ class QuoteController extends Controller
         $quotes = $this->quoteService->getQuotes($mode, $new);
         
         //map quotes to dto and return
-        return response(QuoteMapper::mapArrayQuotesToApiResponse($quotes), 200);
+        return response(QuoteMapper::mapArrayQuotesToDto($quotes), 200);
     }
 
     public function getUserQuotes(){
@@ -48,7 +48,7 @@ class QuoteController extends Controller
     }
 
     public function saveUserQuote(Request $request){
-        $quoteDTO = QuoteMapper::fromRequest($request);
+        $quoteDTO = QuoteMapper::fromRequestToDto($request);
         
         //Retrieve user
         $user = Auth::user();
@@ -59,8 +59,7 @@ class QuoteController extends Controller
     }
 
     public function deleteUserQuote(int $id){
-        $userQuote = UserQuote::find($id);
-        $userQuote->delete();
+        $this->quoteService->deleteUserQuote($id);
         return response(202);
     }
 }

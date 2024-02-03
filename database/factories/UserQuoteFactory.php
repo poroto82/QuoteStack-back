@@ -24,7 +24,7 @@ class UserQuoteFactory extends Factory
         $quoteRepository = new ZenQuoteRepository();
         $quotes = $quoteRepository->getQuotes('random',1);
         return [
-            'quote' => json_encode(QuoteMapper::mapToApiResponse($quotes[0]))
+            'quote' => json_encode(QuoteMapper::mapQuoteToDTO($quotes[0]))
         ];
     
     }

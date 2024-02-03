@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\DTOS\QuoteDTO;
 use App\Models\Quote;
 use App\Models\User;
 use App\Models\UserQuote;
@@ -17,7 +18,7 @@ class QuoteService{
         $this->quoteRepository = $quoteRepository;
     }
 
-    public function getQuotes(string $mode, bool $useCache = true, int $limit = 5){
+    public function getQuotes(string $mode, bool $useCache = true, int $limit = 5): array{
         $cacheKey = $mode.'_quotes_' . $limit;
 
         if ($useCache && Cache::has($cacheKey)) {
@@ -34,7 +35,7 @@ class QuoteService{
         return $quotes;
     }
 
-    public function saveUserQuote(User $user,  $quote){
+    public function saveUserQuote(User $user,  QuoteDTO $quote){
         $userQuote = new UserQuote();
         $userQuote->user_id = $user->id;
         $userQuote->quote = json_encode($quote);
@@ -42,6 +43,9 @@ class QuoteService{
         return $userQuote;
     }
     
-
+    public function deleteUserQuote(int $id):void{
+        $userQuote = UserQuote::find($id);
+        $userQuote->delete();
+    }
     
 }
