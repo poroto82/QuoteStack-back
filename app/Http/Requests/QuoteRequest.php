@@ -27,7 +27,8 @@ class QuoteRequest extends FormRequest
     {
         return [
             'text' => 'required|string',
-            'author' => 'required|string'
+            'author' => 'required|string',
+            'html' => 'required|string'
         ];
     }
 

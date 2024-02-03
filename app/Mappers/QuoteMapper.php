@@ -22,6 +22,10 @@ class QuoteMapper
     public static function fromRequestToDto(Request $request): QuoteDTO{
         $quoteDto = new QuoteDTO();
         $quoteDto->text = $request->input('text');
+        $quoteDto->author = $request->input('author');
+        $quoteDto->image = $request->input('image');
+        $quoteDto->characterCount = $request->input('characterCount');
+        $quoteDto->html = $request->input('html');
         
         return $quoteDto;
     }

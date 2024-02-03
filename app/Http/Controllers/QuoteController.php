@@ -4,10 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\QuoteRequest;
 use App\Mappers\QuoteMapper;
-use App\Models\User;
-use App\Models\UserQuote;
 use App\Services\QuoteService;
-use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 
 class QuoteController extends Controller
@@ -33,7 +31,7 @@ class QuoteController extends Controller
         $user = Auth::user();
 
         //Retrieve user and relation Quotes
-        $quotes = $user->quotes()->get();
+        $quotes = $user->quotes;
 
         if ($quotes->isEmpty()) {
             return response(['message' => 'No favorite quotes found.'], 404);
@@ -44,7 +42,7 @@ class QuoteController extends Controller
             return json_decode($quote->quote);
         });
         //map quotes to dto and return
-        return response(['quotes' => $mappedQuotes], 200);
+        return response($mappedQuotes, 200);
     }
 
     public function saveUserQuote(QuoteRequest $request){
@@ -54,8 +52,8 @@ class QuoteController extends Controller
         $user = Auth::user();
 
         $quote = $this->quoteService->saveUserQuote($user, $quoteDTO);
-        //map quotes to json
-        return response(json_encode($quote), 200);
+        
+        return new JsonResponse(json_decode($quote->quote), 201);
     }
 
     public function deleteUserQuote(int $id){
