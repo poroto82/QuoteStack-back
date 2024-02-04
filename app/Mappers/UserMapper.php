@@ -11,8 +11,9 @@ class UserMapper{
         $userDTO = new UserDTO();
         $userDTO->name = $user->name;
         $userDTO->email = $user->email;
+        $userDTO->id = $user->id;
         
-        $userDTO->quotes = $quotes ? QuoteMapper::mapCollectionDbQuoteToDto($quotes) : null;
+        $userDTO->quotes = QuoteMapper::mapCollectionDbQuoteToDto($quotes);
 
         return $userDTO;
     }

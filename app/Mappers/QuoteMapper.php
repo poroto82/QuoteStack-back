@@ -4,6 +4,7 @@ namespace App\Mappers;
 
 use App\DTOS\QuoteDTO;
 use App\Models\Quote;
+use App\Models\UserQuote;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 
@@ -45,7 +46,7 @@ class QuoteMapper
     }
 
     //check type
-    public static function mapDbQuoteToDto($data): QuoteDTO{
+    public static function mapDbQuoteToDto(UserQuote $data): QuoteDTO{
         $quoteDto = new QuoteDTO();
         $quoteDto->id = $data->id;
         
