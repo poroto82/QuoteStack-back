@@ -33,6 +33,7 @@ Route::middleware(['auth:api'])->group(function () {
     Route::post('/user/quotes', [QuoteController::class,'saveUserQuote'])->name('post.api.secured.quotes');
     Route::delete('/user/quotes/{id}', [QuoteController::class,'deleteUserQuote'])->name('delete.api.secured.quotes');
 
+    Route::get('/users', [QuoteController::class,'getUsersAndQuotes'])->name('get.api.users.quotes');
 
     Route::post('/logout', [AuthController::class, 'logout']);
 });

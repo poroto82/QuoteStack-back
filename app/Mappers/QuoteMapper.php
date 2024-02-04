@@ -4,6 +4,7 @@ namespace App\Mappers;
 
 use App\DTOS\QuoteDTO;
 use App\Models\Quote;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 
 class QuoteMapper
@@ -43,6 +44,22 @@ class QuoteMapper
         return $quote;
     }
 
+    //check type
+    public static function mapDbQuoteToDto($data): QuoteDTO{
+        $quoteDto = new QuoteDTO();
+        $quoteDto->id = $data->id;
+        
+        $auxQuote = json_decode($data->quote);
+        
+        $quoteDto->text = $auxQuote->text;
+        $quoteDto->author = $auxQuote->author;
+        $quoteDto->image = $auxQuote->image;
+        $quoteDto->characterCount = $auxQuote->characterCount;
+        $quoteDto->html = $auxQuote->html;
+
+        return $quoteDto;
+    }
+
     public static function mapArrayApiResponseToQuotes(array $quotes): array{
         return array_map(function($q){
             return self::mapApiResponseToQuote($q);
@@ -53,5 +70,11 @@ class QuoteMapper
         return array_map(function($q){
             return self::mapQuoteToDTO($q);
         },$quotes);
+    }
+
+    public static function mapCollectionDbQuoteToDto (Collection $quotes): array{
+        return $quotes->map(function($q){
+            return self::mapDbQuoteToDto($q);
+        })->toArray();
     }
 }

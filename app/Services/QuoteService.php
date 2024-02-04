@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\DTOS\QuoteDTO;
+use App\Mappers\UserMapper;
 use App\Models\Quote;
 use App\Models\User;
 use App\Models\UserQuote;
@@ -37,6 +38,7 @@ class QuoteService{
 
         return $quotes;
     }
+
 
     public function saveUserQuote(User $user,  QuoteDTO $quote){
         $userQuote = new UserQuote();
