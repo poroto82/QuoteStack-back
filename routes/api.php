@@ -24,7 +24,7 @@ Route::post('/register', [AuthController::class, 'register']);
 
 Route::post('/login', [AuthController::class, 'login']);
 
-Route::get('/quotes/{mode?}/{new?}', [QuoteController::class,'getQuotes'])->name('api.quotes');
+Route::get('/quotes/{mode?}', [QuoteController::class,'getQuotes'])->name('api.quotes');
 
 
 Route::middleware(['auth:api'])->group(function () {

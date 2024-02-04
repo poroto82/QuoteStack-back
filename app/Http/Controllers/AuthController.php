@@ -20,8 +20,6 @@ class AuthController extends Controller
 
         $token = $user->createToken(config('app.name'))->accessToken;
 
-
-
         return response(['user'=>$user,'token' => $token], 200);
     }
 
@@ -37,7 +35,7 @@ class AuthController extends Controller
         $user = $request->user();
         $token = $user->createToken(config('app.name'))->accessToken;
 
-        return response(['token' => $token], 200);
+        return response(['user'=>$user,'token' => $token], 200);
     }
 
     // Cierre de sesión

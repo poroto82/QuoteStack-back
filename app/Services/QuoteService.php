@@ -18,7 +18,7 @@ class QuoteService{
         $this->quoteRepository = $quoteRepository;
     }
 
-    public function getQuotes(string $mode, bool $useCache = true, int $limit = 5): array{
+    public function getQuotes(string $mode, bool $useCache, int $limit): array{
         $cacheKey = $mode.'_quotes_' . $limit;
 
         if ($useCache && Cache::has($cacheKey)) {

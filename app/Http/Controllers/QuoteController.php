@@ -6,6 +6,7 @@ use App\Http\Requests\QuoteRequest;
 use App\Mappers\QuoteMapper;
 use App\Services\QuoteService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class QuoteController extends Controller
@@ -17,10 +18,13 @@ class QuoteController extends Controller
         $this->quoteService = $quoteService;
     }
 
-    public function getQuotes(?string $mode = 'quotes', bool $new = false){ 
+    public function getQuotes(Request $request, ?string $mode = 'quotes'){ 
         
+        $forceRefresh = filter_var($request->get('forceRefresh'), FILTER_VALIDATE_BOOLEAN) ??  false;
+        $limit = $request->get('limit') ?? 5;
+
         //Retrieve Quotes
-        $quotes = $this->quoteService->getQuotes($mode, !$new);
+        $quotes = $this->quoteService->getQuotes($mode, !$forceRefresh, $limit);
         
         //map quotes to dto and return
         return response(QuoteMapper::mapArrayQuotesToDto($quotes), 200);
@@ -33,10 +37,6 @@ class QuoteController extends Controller
         //Retrieve user and relation Quotes
         $quotes = $user->quotes;
 
-        if ($quotes->isEmpty()) {
-            return response(['message' => 'No favorite quotes found.'], 202);
-        }
-    
         // Map quotes to dto using Collection map method
         $mappedQuotes = $quotes->map(function ($quote) {
             return json_decode($quote->quote);
