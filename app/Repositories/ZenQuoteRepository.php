@@ -27,6 +27,9 @@ class ZenQuoteRepository
 
                 return $quotes;
             }
+            else{
+                throw new ZenRepositoryException('Response Unsuccesfull');
+            }
         }
         catch(Exception $e){
             Log::error($e->getMessage());

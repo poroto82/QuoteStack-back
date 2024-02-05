@@ -21,10 +21,12 @@ class UserQuoteFactory extends Factory
      */
     public function definition(): array
     {
-        $quoteRepository = new ZenQuoteRepository();
-        $quotes = $quoteRepository->getQuotes('random',1);
+        $quoteService = new QuoteService(new ZenQuoteRepository());
+        $quotes = $quoteService->getQuotes('quotes',true,20);
+        $quote = $quotes[rand(0,sizeof($quotes)-1)];
+        
         return [
-            'quote' => json_encode(QuoteMapper::mapQuoteToDTO($quotes[0]))
+            'quote' => json_encode(QuoteMapper::mapQuoteToDTO($quote))
         ];
     
     }

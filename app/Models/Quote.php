@@ -2,8 +2,12 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+
 class Quote
 {
+    use HasFactory;
+
     public string $q;
     public string $a;
     public ?string $i;  // Nullable Only in pro version of api
