@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 
 class QuoteMapper
 {
-    public static function mapQuoteToDTO(Quote $quote)
+    public static function mapQuoteToDTO(Quote $quote): QuoteDTO
     {
         $quoteDto = new QuoteDTO();
         $quoteDto->text = $quote->q;

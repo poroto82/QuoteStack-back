@@ -11,6 +11,17 @@ use Illuminate\Support\Facades\Log;
 class ZenQuoteRepository
 {
 
+    /**
+     * Get quotes from the ZenQuotes API based on the specified mode and limit.
+     *
+     * @param string $mode Mode of the quotes API.
+     * @param int $limit Limit of quotes to retrieve.
+     *
+     * @return array Retrieved quotes from the ZenQuotes API.
+     *
+     * @throws ZenRepositoryException If the response from the ZenQuotes API is unsuccessful.
+     * @throws ZenRepositoryException If there is an exception while retrieving quotes from the ZenQuotes API.
+     */
     public function getQuotes(string $mode, int $limit): array
     {
         try{
