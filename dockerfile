@@ -19,15 +19,31 @@ RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd sockets
 # Get latest Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Install redis
-#RUN pecl install -o -f redis \
-#    &&  rm -rf /tmp/pear \
-#    &&  docker-php-ext-enable redis
-
 # Set working directory
 WORKDIR /var/www
 
-# Copy custom configurations PHP
-#COPY docker/php/custom.ini /usr/local/etc/php/conf.d/custom.ini
+# Copia solo los archivos necesarios para aprovechar la caché de Docker
+COPY composer.json composer.lock ./
+
+# Copia el resto de la aplicación
+COPY . .
 
 
+# Instala las dependencias de Composer
+RUN composer install --no-interaction --no-plugins --no-scripts --no-dev
+
+
+# Opta por la eliminación de los archivos y directorios innecesarios para producción
+RUN rm -rf docker/ tests/ .git/ .env.example .gitignore
+
+# Cambia los permisos para garantizar que el contenedor pueda escribir en ciertos directorios
+RUN chown -R www-data:www-data storage bootstrap/cache
+
+# Configura PHP-FPM para que escuche en un socket en lugar de en un puerto
+RUN sed -i 's/^listen = .*/listen = \/var\/www\/php-fpm.sock/' /usr/local/etc/php-fpm.d/www.conf
+
+# Expone el socket de PHP-FPM
+EXPOSE 9000
+
+# Inicia PHP-FPM
+CMD ["php-fpm"]
