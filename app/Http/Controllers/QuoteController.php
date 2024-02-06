@@ -56,7 +56,10 @@ class QuoteController extends Controller
     }
 
     public function deleteUserQuote(int $id){
-        $this->quoteService->deleteUserQuote($id);
+        //Retrieve user
+        $user = Auth::user();
+
+        $this->quoteService->deleteUserQuote($id,$user);
         return response(202);
     }
 

@@ -71,9 +71,16 @@ class QuoteService
      * @param int $id ID of the quote to be deleted.
      * @return void
      */
-    public function deleteUserQuote(int $id): void
+    public function deleteUserQuote(int $id, User $user): void
     {
-        $userQuote = UserQuote::find($id);
-        $userQuote->delete();
+        $quote = $user->quotes->filter(function ($item) use ($id){
+            return $item->id == $id;
+        })->first();
+
+        if (!$quote){
+            throw new \Exception('This quote does not exist or does not belong to you.');
+        }
+
+        $quote->delete();
     }
 }
