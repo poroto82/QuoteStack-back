@@ -22,11 +22,14 @@ class QuoteController extends Controller
 
     public function getQuotes(Request $request, ?string $mode = 'quotes'){ 
         
+        // Key to apply cache per ip and device
+        $ipDeviceKey = $request->ip().$request->userAgent();
+
         $forceRefresh = filter_var($request->get('forceRefresh'), FILTER_VALIDATE_BOOLEAN) ??  false;
         $limit = $request->get('limit') ?? 5;
 
         //Retrieve Quotes
-        $quotes = $this->quoteService->getQuotes($mode, !$forceRefresh, $limit);
+        $quotes = $this->quoteService->getQuotes($mode, !$forceRefresh, $limit, $ipDeviceKey);
         
         //map quotes to dto and return
         return response(QuoteMapper::mapArrayQuotesToDto($quotes), 200);

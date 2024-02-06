@@ -3,8 +3,6 @@
 namespace App\Services;
 
 use App\DTOS\QuoteDTO;
-use App\Mappers\UserMapper;
-use App\Models\Quote;
 use App\Models\User;
 use App\Models\UserQuote;
 use App\Repositories\ZenQuoteRepository;
@@ -26,11 +24,12 @@ class QuoteService
      * @param string $mode Mode of the quote.  quotes | random
      * @param bool $useCache Indicates whether to use cache.
      * @param int $limit Limit of quotes to retrieve.
+     * @param string $ipKey ip and user agent to apply cache per ip and device
      * @return array Retrieved quotes.
      */
-    public function getQuotes(string $mode, bool $useCache, int $limit): array
+    public function getQuotes(string $mode, bool $useCache, int $limit, string $ipKey = ''): array
     {
-        $cacheKey = $mode . '_quotes_' . $limit;
+        $cacheKey = $mode . '_quotes_' . $limit. $ipKey ;
 
         if ($useCache && Cache::has($cacheKey)) {
             // Si se utiliza caché y los datos están en caché, devolver desde la caché
