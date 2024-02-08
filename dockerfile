@@ -30,7 +30,7 @@ COPY . .
 
 
 # Instala las dependencias de Composer
-RUN composer install --no-interaction --no-plugins --no-scripts --no-dev
+RUN composer install 
 
 
 # Opta por la eliminación de los archivos y directorios innecesarios para producción
